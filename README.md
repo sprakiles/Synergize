@@ -42,7 +42,7 @@ This project is built with modern technologies to ensure high performance and a 
 | React.js               | Node.js               | PostgreSQL                   |
 | Vite                   | Express.js            | Prisma ORM                   |
 | Tailwind CSS           | JWT Authentication    | Vercel (Frontend Hosting)    |
-| @dnd-kit (Drag & Drop) | Bcrypt.js             | Render (Backend Hosting)     |
+| @dnd-kit (Drag & Drop) | Bcrypt.js             | Railway (Backend Hosting)     |
 | @floating-ui/react     |                       | Concurrently (Dev Utility)   |
 
 ---
