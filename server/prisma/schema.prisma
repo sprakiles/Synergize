@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 1. User Model
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  fullName  String
+  password  String    // Important: This will be a hashed password, not plain text.
+  avatarUrl String?
+
+  // --- Relations ---
+  ownedProjects Project[] @relation("ProjectOwner")
+  tasksAssigned Task[]    @relation("TaskAssignee")
+  projects      ProjectMember[]
+}
+
+// 2. Project Model
+model Project {
+  id        String    @id @default(cuid())
+  title     String
+  startDate DateTime? 
+  endDate   DateTime? 
+  createdAt DateTime  @default(now())
+
+  // --- Relations ---
+  owner     User      @relation("ProjectOwner", fields: [ownerId], references: [id])
+  ownerId   String
+
+  tasks     Task[]
+  members   ProjectMember[]
+}
+
+// 3. Task Model
+model Task {
+  id         String       @id @default(cuid())
+  title      String
+  status     TaskStatus   @default(TO_DO)
+  priority   TaskPriority @default(MEDIUM)
+  dueDate    DateTime?
+
+  // --- Relations ---
+  project    Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId  String
+
+  assignee   User?        @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  assigneeId String?
+}
+
+// 4. ProjectMember Model
+model ProjectMember {
+  // --- Relations ---
+  project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade) // If a project is deleted, remove members
+  projectId  String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade) // If a user is deleted, remove them from projects
+  userId     String
+  assignedAt DateTime  @default(now())
+
+  @@id([projectId, userId])
+}
+
+
+// --- Enums ---
+enum TaskStatus {
+  TO_DO
+  IN_PROGRESS
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
