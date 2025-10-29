@@ -1,8 +1,6 @@
 import jwt from 'jsonwebtoken';
 
 const authMiddleware = (req, res, next) => {
-    // I expect the token to be sent in the 'Authorization' header.
-    // It usually looks like this: "Bearer eyJhbGciOiJIUzI1NiIsIn..."
     const authHeader = req.header('Authorization');
 
     if (!authHeader) {
@@ -14,7 +12,6 @@ const authMiddleware = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded.user;
         
-        // If the token is valid, I'll call next() to allow the request to proceed.
         next();
 
     } catch (err) {
