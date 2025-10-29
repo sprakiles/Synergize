@@ -1,21 +1,26 @@
 {
-  "name": "synergize",
+  "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
-  "private": true,
-  "devDependencies": {
-    "concurrently": "^9.2.1"
-  },
+  "main": "src/server.js",
+  "type": "module",
   "scripts": {
-    "install-server": "cd server && npm install",
-    "install-client": "cd client && npm install",
-    "install-all": "npm run install-server && npm run install-client",
-    "server": "cd server && npm start",
-    "client": "cd client && npm run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node run-start.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^6.18.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }
