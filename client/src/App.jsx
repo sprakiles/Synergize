@@ -12,6 +12,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
+  const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+
   useEffect(() => {
     const storedTheme = localStorage.getItem('theme');
     if (storedTheme) setTheme(storedTheme);
@@ -31,7 +33,7 @@ function App() {
     const fetchUser = async () => {
         if (token) {
             try {
-                const response = await fetch('/api/users/me', {
+                const response = await fetch(`${API_BASE_URL}/api/users/me`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (response.ok) {
