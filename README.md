@@ -107,7 +107,7 @@ npm run dev
 
 This project is configured for a split deployment strategy:
 *   **Frontend (Client):** Deployed on **Vercel**, with the Root Directory set to `client`.
-*   **Backend (Server):** Deployed on **Render** as a Web Service, with the Root Directory set to `server`.
+*   **Backend (Server):** Deployed on **Railway** as a Web Service, with the Root Directory set to `server`.
 
 ---
 
