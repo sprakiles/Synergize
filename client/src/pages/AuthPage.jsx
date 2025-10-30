@@ -8,6 +8,12 @@ const AuthPage = ({ onLoginSuccess, initialMode }) => {
   const [rememberMe, setRememberMe] = useState(true);
 
   const isSignUp = mode === 'signUp';
+  
+  // --- THE FIX IS HERE ---
+  // 1. اقرأ الرابط الأساسي للخادم من متغيرات البيئة.
+  // في بيئة الإنتاج (Vercel)، ستكون هذه قيمة رابط Railway.
+  // في البيئة المحلية، ستكون هذه قيمة فارغة، مما يجعل الطلبات نسبية (وهو ما يحتاجه الـ proxy).
+  const API_BASE_URL = import.meta.env.VITE_API_URL || '';
   const API_URL = '/api/auth';
 
   const handleSubmit = async (e) => {
@@ -20,7 +26,10 @@ const AuthPage = ({ onLoginSuccess, initialMode }) => {
     const password = form.password.value;
     const fullName = isSignUp ? form.fullname.value : undefined;
 
-    const endpoint = isSignUp ? `${API_URL}/register` : `${API_URL}/login`;
+    // 2. قم ببناء الرابط الكامل للطلب بدمج الرابط الأساسي مع مسار الـ API.
+    const endpoint = isSignUp 
+        ? `${API_BASE_URL}${API_URL}/register` 
+        : `${API_BASE_URL}${API_URL}/login`;
 
     const body = JSON.stringify({
         fullName,
@@ -30,6 +39,7 @@ const AuthPage = ({ onLoginSuccess, initialMode }) => {
     });
 
     try {
+        // 3. استخدم الرابط الكامل في طلب fetch.
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -92,11 +102,9 @@ const AuthPage = ({ onLoginSuccess, initialMode }) => {
               <input type="password" id="password" placeholder="••••••••" required className="w-full px-4 py-2 bg-slate-100 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" />
             </div>
             
-            {/* --- Modern Checkbox for "Remember Me" --- */}
             {!isSignUp && (
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                 {/* --- Custom Styled Checkbox for "Remember Me" --- */}
                   <div className="flex items-center">
                       <button
                           type="button"
@@ -115,7 +123,6 @@ const AuthPage = ({ onLoginSuccess, initialMode }) => {
                               }
                           `}
                       >
-                          {/* This is the checkmark icon, it only appears when checked */}
                           {rememberMe && (
                               <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
