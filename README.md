@@ -118,3 +118,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 
 Project Link: [https://github.com/sprakiles/Synergize](https://github.com/sprakiles/Synergize)
+Website Link: [https://synergize-theta.vercel.app](https://synergize-theta.vercel.app)
